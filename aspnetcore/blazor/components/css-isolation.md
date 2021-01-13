@@ -6,7 +6,7 @@ monikerRange: '>= aspnetcore-5.0'
 ms.author: riande
 ms.custom: mvc
 ms.date: 10/20/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: blazor/components/css-isolation
 ---
 # ASP.NET Core Blazor CSS isolation
@@ -17,9 +17,9 @@ CSS isolation simplifies an app's CSS footprint by preventing dependencies on gl
 
 ## Enable CSS isolation 
 
-To define component-specific styles, create a `razor.css` file matching the name of the `.razor` file for the component. This `razor.css` file is a *scoped CSS file*. 
+To define component-specific styles, create a `.razor.css` file matching the name of the `.razor` file for the component. This `.razor.css` file is a *scoped CSS file*. 
 
-For a `MyComponent` component that has a `MyComponent.razor` file, create a file alongside the component called `MyComponent.razor.css`. The `MyComponent` value in the `razor.css` filename is **not** case-sensitive.
+For a `MyComponent` component that has a `MyComponent.razor` file, create a file alongside the component called `MyComponent.razor.css`. The `MyComponent` value in the `.razor.css` filename is **not** case-sensitive.
 
 For example to add CSS isolation to the `Counter` component in the default Blazor project template, add a new file named `Counter.razor.css` alongside the `Counter.razor` file, then add the following CSS:
 
@@ -69,7 +69,7 @@ If other projects are utilized, such as NuGet packages or [Razor class libraries
 
 ## Child component support
 
-By default, CSS isolation only applies to the component you associate with the format `{COMPONENT NAME}.razor.css`, where the placeholder `{COMPONENT NAME}` is usually the component name. To apply changes to a child component, use the `::deep` combinator to any descendant elements in the parent component's `razor.css` file. The `::deep` combinator selects elements that are *descendants* of an element's generated scope identifier. 
+By default, CSS isolation only applies to the component you associate with the format `{COMPONENT NAME}.razor.css`, where the placeholder `{COMPONENT NAME}` is usually the component name. To apply changes to a child component, use the `::deep` combinator to any descendant elements in the parent component's `.razor.css` file. The `::deep` combinator selects elements that are *descendants* of an element's generated scope identifier. 
 
 The following example shows a parent component called `Parent` with a child component called `Child`.
 
@@ -126,7 +126,7 @@ The `h1` style now applies to the `Parent` and `Child` components without the ne
 
 CSS preprocessors are useful for improving CSS development by utilizing features such as variables, nesting, modules, mixins, and inheritance. While CSS isolation doesn't natively support CSS preprocessors such as Sass or Less, integrating CSS preprocessors is seamless as long as preprocessor compilation occurs before Blazor rewrites the CSS selectors during the build process. Using Visual Studio for example, configure existing preprocessor compilation as a **Before Build** task in the Visual Studio Task Runner Explorer.
 
-Many third-party NuGet packages, such as [Delegate.SassBuilder](https://www.nuget.org/packages/Delegate.SassBuilder), can compile SASS/SCSS files at the beginning of the build process before CSS isolation occurs, and no additional additional configuration is required.
+Many third-party NuGet packages, such as [Delegate.SassBuilder](https://www.nuget.org/packages/Delegate.SassBuilder), can compile SASS/SCSS files at the beginning of the build process before CSS isolation occurs, and no additional configuration is required.
 
 ## CSS isolation configuration
 
@@ -163,3 +163,24 @@ To opt out of how Blazor publishes and loads scoped files at runtime, use the `D
   <DisableScopedCssBundling>true</DisableScopedCssBundling>
 </PropertyGroup>
 ```
+
+## Razor class library (RCL) support
+
+When a [Razor class library (RCL)](xref:razor-pages/ui-class) provides isolated styles, the `<link>` tag's `href` attribute points to `{STATIC WEB ASSET BASE PATH}/{ASSEMBLY NAME}.bundle.scp.css`, where the placeholders are:
+
+* `{STATIC WEB ASSET BASE PATH}`: The static web asset base path.
+* `{ASSEMBLY NAME}`: The class library's assembly name.
+
+In the following example:
+
+* The static web asset base path is `_content/ClassLib`.
+* The class library's assembly name is `ClassLib`.
+
+```html
+<link href="_content/ClassLib/ClassLib.bundle.scp.css" rel="stylesheet">
+```
+
+For more information on RCLs and component libraries, see:
+
+* <xref:razor-pages/ui-class>
+* <xref:blazor/components/class-libraries>.

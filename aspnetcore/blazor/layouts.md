@@ -6,7 +6,7 @@ monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
 ms.custom: mvc
 ms.date: 06/23/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: blazor/layouts
 ---
 # ASP.NET Core Blazor layouts
@@ -15,22 +15,32 @@ By [Rainer Stropek](https://www.timecockpit.com) and [Luke Latham](https://githu
 
 Some app elements, such as menus, copyright messages, and company logos, are usually part of app's overall layout and used by every component in the app. Copying the code of these elements into all of the components of an app isn't an efficient approach. Every time one of the elements requires an update, every component must be updated. Such duplication is difficult to maintain and can lead to inconsistent content over time. *Layouts* solve this problem.
 
-Technically, a layout is just another component. A layout is defined in a Razor template or in C# code and can use [data binding](xref:blazor/components/data-binding), [dependency injection](xref:blazor/fundamentals/dependency-injection), and other component scenarios.
+Technically, a layout is just another component. A layout is defined in a Razor template or in C# code and can use [data binding](xref:blazor/components/data-binding), [dependency injection](xref:blazor/fundamentals/dependency-injection), and other component scenarios. Layouts only apply to routable Razor components that have [`@page`](xref:mvc/views/razor#page) directives.
 
-To turn a *component* into a *layout*, the component:
+To convert a component into a layout:
 
-* Inherits from <xref:Microsoft.AspNetCore.Components.LayoutComponentBase>, which defines a <xref:Microsoft.AspNetCore.Components.LayoutComponentBase.Body> property for the rendered content inside the layout.
-* Uses the Razor syntax `@Body` to specify the location in the layout markup where the content is rendered.
+* Inherit the component from <xref:Microsoft.AspNetCore.Components.LayoutComponentBase>. The <xref:Microsoft.AspNetCore.Components.LayoutComponentBase> defines a <xref:Microsoft.AspNetCore.Components.LayoutComponentBase.Body> property for the rendered content inside the layout.
+* Use the Razor syntax `@Body` to specify the location in the layout markup where the content is rendered.
 
 The following code sample shows the Razor template of a layout component, `MainLayout.razor`. The layout inherits <xref:Microsoft.AspNetCore.Components.LayoutComponentBase> and sets the `@Body` between the navigation bar and the footer:
 
-[!code-razor[](layouts/sample_snapshot/3.x/MainLayout.razor?highlight=1,13)]
+[!code-razor[](layouts/sample_snapshot/3.x/MainLayout.razor)]
 
 ## `MainLayout` component
 
 In an app based on one of the Blazor project templates, the `MainLayout` component (`MainLayout.razor`) is in the app's `Shared` folder:
 
+::: moniker range=">= aspnetcore-5.0"
+
+[!code-razor[](./common/samples/5.x/BlazorWebAssemblySample/Shared/MainLayout.razor)]
+
+::: moniker-end
+
+::: moniker range="< aspnetcore-5.0"
+
 [!code-razor[](./common/samples/3.x/BlazorWebAssemblySample/Shared/MainLayout.razor)]
+
+::: moniker-end
 
 ## Default layout
 
@@ -38,9 +48,13 @@ Specify the default app layout in the <xref:Microsoft.AspNetCore.Components.Rout
 
 [!code-razor[](layouts/sample_snapshot/3.x/App1.razor?highlight=3)]
 
+[!INCLUDE[](~/blazor/includes/prefer-exact-matches.md)]
+
 To supply a default layout for <xref:Microsoft.AspNetCore.Components.Routing.Router.NotFound> content, specify a <xref:Microsoft.AspNetCore.Components.LayoutView> for <xref:Microsoft.AspNetCore.Components.Routing.Router.NotFound> content:
 
 [!code-razor[](layouts/sample_snapshot/3.x/App2.razor?highlight=6-9)]
+
+[!INCLUDE[](~/blazor/includes/prefer-exact-matches.md)]
 
 For more information on the <xref:Microsoft.AspNetCore.Components.Routing.Router> component, see <xref:blazor/fundamentals/routing>.
 
@@ -48,7 +62,7 @@ Specifying the layout as a default layout in the router is a useful practice bec
 
 ## Specify a layout in a component
 
-Use the Razor directive `@layout` to apply a layout to a component. The compiler converts `@layout` into a <xref:Microsoft.AspNetCore.Components.LayoutAttribute>, which is applied to the component class.
+Use the [`@layout`](xref:mvc/views/razor#layout) Razor directive to apply a layout to a routable Razor component that also has an [`@page`](xref:mvc/views/razor#page) directive. The compiler converts `@layout` into a <xref:Microsoft.AspNetCore.Components.LayoutAttribute>, which is applied to the component class.
 
 The content of the following `MasterList` component is inserted into the `MasterLayout` at the position of `@Body`:
 
@@ -75,6 +89,9 @@ Specifying a layout in `_Imports.razor` overrides a layout specified as the rout
 > [!WARNING]
 > Do **not** add a Razor `@layout` directive to the root `_Imports.razor` file, which results in an infinite loop of layouts in the app. To control the default app layout, specify the layout in the `Router` component. For more information, see the [Default layout](#default-layout) section.
 
+> [!NOTE]
+> The [`@layout`](xref:mvc/views/razor#layout) Razor directive only applies a layout to routable Razor components with [`@page`](xref:mvc/views/razor#page) directives.
+
 ## Nested layouts
 
 Apps can consist of nested layouts. A component can reference a layout which in turn references another layout. For example, nesting layouts are used to create a multi-level menu structure.
@@ -93,7 +110,7 @@ Finally, `MasterLayout` in `MasterLayout.razor` contains the top-level layout el
 
 ## Share a Razor Pages layout with integrated components
 
-When routable components are integrated into a Razor Pages app, the app's shared layout can be used with the components. For more information, see <xref:blazor/components/integrate-components-into-razor-pages-and-mvc-apps>.
+When routable components are integrated into a Razor Pages app, the app's shared layout can be used with the components. For more information, see <xref:blazor/components/prerendering-and-integration>.
 
 ## Additional resources
 

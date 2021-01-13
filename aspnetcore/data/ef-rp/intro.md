@@ -5,7 +5,7 @@ description: Shows how to create a Razor Pages app using Entity Framework Core
 ms.author: riande
 ms.custom: "mvc, seodec18"
 ms.date: 9/26/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: data/ef-rp/intro
 ---
 
@@ -103,11 +103,16 @@ To run the app after downloading the completed project:
 
 # [Visual Studio](#tab/visual-studio)
 
-* From the Visual Studio **File** menu, select **New** > **Project**.
-* Select **ASP.NET Core Web Application**.
-* Name the project *ContosoUniversity*. It's important to use this exact name including capitalization, so the namespaces match when code is copied and pasted.
-* Select **.NET Core** and **ASP.NET Core 5.0** in the dropdowns, and then select **Web Application**.
-
+1. Start Visual Studio and select **Create a new project**.
+1. In the **Create a new project** dialog, select **ASP.NET Core Web Application** > **Next**.
+1. In the **Configure your new project** dialog, enter `ContosoUniversity` for **Project name**. It's important to use this exact name including capitalization, so each `namespace` matches when code is copied.
+1. Select **Create**.
+1. In the **Create a new ASP.NET Core web application** dialog, select:
+    1. **.NET Core** and **ASP.NET Core 5.0** in the dropdowns.
+    1. **ASP.NET Core Web App**.
+    1. **Create**
+      ![New ASP.NET Core Project dialog](~/data/ef-mvc/intro/_static/new-aspnet5.png)
+    
 # [Visual Studio Code](#tab/visual-studio-code)
 
 * In a terminal, navigate to the folder in which the project folder should be created.
@@ -123,6 +128,7 @@ To run the app after downloading the completed project:
 ## Set up the site style
 
 Copy and paste the following code into the *Pages/Shared/_Layout.cshtml* file:
+
 [!code-cshtml[Main](intro/samples/cu50/Pages/Shared/_Layout.cshtml?highlight=6,14,21-35,49)]
 
 The layout file sets the site header, footer, and menu. The preceding code makes the following changes:
@@ -215,7 +221,8 @@ In this section, you use the ASP.NET Core scaffolding tool to generate:
   * In the **Model class** drop-down, select **Student (ContosoUniversity.Models)**.
   * In the **Data context class** row, select the **+** (plus) sign.
     * Change the data context name to end in `SchoolContext` rather than `ContosoUniversityContext`. The updated context name: `ContosoUniversity.Data.SchoolContext`
-   * Select **Add**.
+    * Select **Add** to finish adding the data context class.
+   * Select **Add** to finish the **Add Razor Pages** dialog.
 
 The following packages are automatically installed:
 
@@ -352,7 +359,7 @@ The name of the connection string is passed in to the context by calling a metho
 
 ### Add the database exception filter
 
-Add `AddDatabaseDeveloperPageExceptionFilter` to `ConfigureServices` as shown in the following code:
+Add <xref:Microsoft.Extensions.DependencyInjection.DatabaseDeveloperPageExceptionFilterServiceExtensions.AddDatabaseDeveloperPageExceptionFilter%2A> to `ConfigureServices` as shown in the following code:
 
 # [Visual Studio](#tab/visual-studio)
 
@@ -360,10 +367,10 @@ Add `AddDatabaseDeveloperPageExceptionFilter` to `ConfigureServices` as shown in
 
 Add the [Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore](https://www.nuget.org/packages/Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore) NuGet package.
 
-In the PMC, enter the following command to add the NuGet package:
+In the PMC, enter the following to add the NuGet package:
 
 ```powershell
-Install-Package Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore -Version 5.0.0-rc.1.20451.17
+Install-Package Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore -Version 5.0.0-rc.2.20475.17
 ```
 
 # [Visual Studio Code](#tab/visual-studio-code)
@@ -373,6 +380,8 @@ Install-Package Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore -Version 5.
 ---
 
 The `Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore` NuGet package provides ASP.NET Core middleware for Entity Framework Core error pages. This middleware helps to detect and diagnose errors with Entity Framework Core migrations.
+
+The `AddDatabaseDeveloperPageExceptionFilter` provides helpful error information in the [development environment](xref:fundamentals/environments).
 
 ## Create the database
 
@@ -457,7 +466,7 @@ A web server has a limited number of threads available, and in high load situati
 
 Asynchronous code does introduce a small amount of overhead at run time. For low traffic situations, the performance hit is negligible, while for high traffic situations, the potential performance improvement is substantial.
 
-In the following code, the [async](/dotnet/csharp/language-reference/keywords/async) keyword, `Task<T>` return value, `await` keyword, and `ToListAsync` method make the code execute asynchronously.
+In the following code, the [async](/dotnet/csharp/language-reference/keywords/async) keyword, `Task` return value, `await` keyword, and `ToListAsync` method make the code execute asynchronously.
 
 ```csharp
 public async Task OnGetAsync()
@@ -469,7 +478,7 @@ public async Task OnGetAsync()
 * The `async` keyword tells the compiler to:
   * Generate callbacks for parts of the method body.
   * Create the [Task](/dotnet/csharp/programming-guide/concepts/async/async-return-types#BKMK_TaskReturnType) object that's returned.
-* The `Task<T>` return type represents ongoing work.
+* The `Task` return type represents ongoing work.
 * The `await` keyword causes the compiler to split the method into two parts. The first part ends with the operation that's started asynchronously. The second part is put into a callback method that's called when the operation completes.
 * `ToListAsync` is the asynchronous version of the `ToList` extension method.
 

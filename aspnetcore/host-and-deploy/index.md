@@ -6,7 +6,7 @@ monikerRange: '>= aspnetcore-2.1'
 ms.author: riande
 ms.custom: mvc
 ms.date: 02/07/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: host-and-deploy/index
 ---
 # Host and deploy ASP.NET Core
@@ -22,6 +22,17 @@ In general, to deploy an ASP.NET Core app to a hosting environment:
 ## Publish to a folder
 
 The [dotnet publish](/dotnet/core/tools/dotnet-publish) command compiles app code and copies the files required to run the app into a *publish* folder. When deploying from Visual Studio, the `dotnet publish` step occurs automatically before the files are copied to the deployment destination.
+
+## Publish settings files
+
+`*.json` files are published by default. To publish other settings files, specify them in an [`<ItemGroup><Content Include= ... />`](/visualstudio/msbuild/common-msbuild-project-items#content) element in the project file. The following example publishes XML files:
+
+```xml
+<ItemGroup>
+  <Content Include="**\*.xml" Exclude="bin\**\*;obj\**\*"
+    CopyToOutputDirectory="PreserveNewest" />
+</ItemGroup>
+```
 
 ### Folder contents
 

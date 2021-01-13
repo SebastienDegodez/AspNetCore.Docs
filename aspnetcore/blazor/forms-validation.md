@@ -6,7 +6,7 @@ monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
 ms.custom: mvc
 ms.date: 09/17/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: blazor/forms-validation
 ---
 # ASP.NET Core Blazor forms and validation
@@ -54,7 +54,7 @@ In the preceding example:
 
 * The form validates user input in the `name` field using the validation defined in the `ExampleModel` type. The model is created in the component's `@code` block and held in a private field (`exampleModel`). The field is assigned to the `Model` attribute of the `<EditForm>` element.
 * The <xref:Microsoft.AspNetCore.Components.Forms.InputText> component's `@bind-Value` binds:
-  * The model property (`exampleModel.Name`) to the <xref:Microsoft.AspNetCore.Components.Forms.InputText> component's `Value` property. For more information on property binding, see <xref:blazor/components/data-binding#parent-to-child-binding-with-component-parameters>.
+  * The model property (`exampleModel.Name`) to the <xref:Microsoft.AspNetCore.Components.Forms.InputText> component's `Value` property. For more information on property binding, see <xref:blazor/components/data-binding#binding-with-component-parameters>.
   * A change event delegate to the <xref:Microsoft.AspNetCore.Components.Forms.InputText> component's `ValueChanged` property.
 * The <xref:Microsoft.AspNetCore.Components.Forms.DataAnnotationsValidator> [validator component](#validator-components) attaches validation support using data annotations.
 * The <xref:Microsoft.AspNetCore.Components.Forms.ValidationSummary> component summarizes validation messages.
@@ -320,49 +320,46 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 
-namespace BlazorSample.Client
+public class CustomValidator : ComponentBase
 {
-    public class CustomValidator : ComponentBase
+    private ValidationMessageStore messageStore;
+
+    [CascadingParameter]
+    private EditContext CurrentEditContext { get; set; }
+
+    protected override void OnInitialized()
     {
-        private ValidationMessageStore messageStore;
-
-        [CascadingParameter]
-        private EditContext CurrentEditContext { get; set; }
-
-        protected override void OnInitialized()
+        if (CurrentEditContext == null)
         {
-            if (CurrentEditContext == null)
-            {
-                throw new InvalidOperationException(
-                    $"{nameof(CustomValidator)} requires a cascading " +
-                    $"parameter of type {nameof(EditContext)}. " +
-                    $"For example, you can use {nameof(CustomValidator)} " +
-                    $"inside an {nameof(EditForm)}.");
-            }
-
-            messageStore = new ValidationMessageStore(CurrentEditContext);
-
-            CurrentEditContext.OnValidationRequested += (s, e) => 
-                messageStore.Clear();
-            CurrentEditContext.OnFieldChanged += (s, e) => 
-                messageStore.Clear(e.FieldIdentifier);
+            throw new InvalidOperationException(
+                $"{nameof(CustomValidator)} requires a cascading " +
+                $"parameter of type {nameof(EditContext)}. " +
+                $"For example, you can use {nameof(CustomValidator)} " +
+                $"inside an {nameof(EditForm)}.");
         }
 
-        public void DisplayErrors(Dictionary<string, List<string>> errors)
-        {
-            foreach (var err in errors)
-            {
-                messageStore.Add(CurrentEditContext.Field(err.Key), err.Value);
-            }
+        messageStore = new ValidationMessageStore(CurrentEditContext);
 
-            CurrentEditContext.NotifyValidationStateChanged();
-        }
-
-        public void ClearErrors()
-        {
+        CurrentEditContext.OnValidationRequested += (s, e) => 
             messageStore.Clear();
-            CurrentEditContext.NotifyValidationStateChanged();
+        CurrentEditContext.OnFieldChanged += (s, e) => 
+            messageStore.Clear(e.FieldIdentifier);
+    }
+
+    public void DisplayErrors(Dictionary<string, List<string>> errors)
+    {
+        foreach (var err in errors)
+        {
+            messageStore.Add(CurrentEditContext.Field(err.Key), err.Value);
         }
+
+        CurrentEditContext.NotifyValidationStateChanged();
+    }
+
+    public void ClearErrors()
+    {
+        messageStore.Clear();
+        CurrentEditContext.NotifyValidationStateChanged();
     }
 }
 ```
@@ -466,7 +463,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using BlazorSample.Shared;
 
-namespace BlazorSample.Server.Controllers
+namespace {ASSEMBLY NAME}.Controllers
 {
     [Authorize]
     [ApiController]
@@ -503,7 +500,7 @@ namespace BlazorSample.Server.Controllers
             }
             catch (Exception ex)
             {
-                logger.LogError("Validation Error: {MESSAGE}", ex.Message);
+                logger.LogError("Validation Error: {Message}", ex.Message);
             }
 
             return BadRequest(ModelState);
@@ -511,6 +508,8 @@ namespace BlazorSample.Server.Controllers
     }
 }
 ```
+
+In the preceding example, the placeholder `{ASSEMBLY NAME}` is the app's assembly name (for example, `BlazorSample.Server`).
 
 When a model binding validation error occurs on the server, an [`ApiController`](xref:web-api/index) (<xref:Microsoft.AspNetCore.Mvc.ApiControllerAttribute>) normally returns a [default bad request response](xref:web-api/index#default-badrequest-response) with a <xref:Microsoft.AspNetCore.Mvc.ValidationProblemDetails>. The response contains more data than just the validation errors, as shown in the following example when all of the fields of the *Starfleet Starship Database* form aren't submitted and the form fails validation:
 
@@ -690,7 +689,7 @@ In the client project, the *Starfleet Starship Database* form is updated to show
         }
         catch (Exception ex)
         {
-            Logger.LogError("Form processing error: {MESSAGE}", ex.Message);
+            Logger.LogError("Form processing error: {Message}", ex.Message);
             disabled = true;
             messageStyles = "color:red";
             message = "There was an error processing the form.";
@@ -713,20 +712,15 @@ In the client project, the *Starfleet Starship Database* form is updated to show
 
 Use the <xref:Microsoft.AspNetCore.Components.Forms.InputText> component to create a custom component that uses the `input` event instead of the `change` event.
 
-In the following example, the `CustomInputText` component inherits the framework's `InputText` component and sets the event binding (<xref:Microsoft.AspNetCore.Components.EventCallbackFactoryBinderExtensions.CreateBinder%2A>) to the `oninput` event.
+In the following example, the `CustomInputText` component inherits the framework's `InputText` component and sets event binding to the `oninput` event.
 
 `Shared/CustomInputText.razor`:
 
 ```razor
 @inherits InputText
 
-<input 
-    @attributes="AdditionalAttributes" 
-    class="@CssClass" 
-    value="@CurrentValue"
-    @oninput="EventCallback.Factory.CreateBinder<string>(
-         this, __value => CurrentValueAsString = __value, 
-         CurrentValueAsString)" />
+<input @attributes="AdditionalAttributes" class="@CssClass" 
+    @bind="CurrentValueAsString" @bind:event="oninput" />
 ```
 
 The `CustomInputText` component can be used anywhere <xref:Microsoft.AspNetCore.Components.Forms.InputText> is used:
@@ -789,7 +783,7 @@ public Engine? Engine { get; set; } = null;
 Add the following `enums` to the app. Create a new file to hold the `enums` or add the `enums` to the `Starship.cs` file. Make the `enums` accessible to the `Starship` model and the *Starfleet Starship Database* form:
 
 ```csharp
-public enum Manufacturer { SpaceX, NASA, ULA, Virgin, Unknown }
+public enum Manufacturer { SpaceX, NASA, ULA, VirginGalactic, Unknown }
 public enum Color { ImperialRed, SpacecruiserGreen, StarshipBlue, VoyagerOrange }
 public enum Engine { Ion, Plasma, Fusion, Warp }
 ```
@@ -1048,9 +1042,13 @@ The [`Microsoft.AspNetCore.Components.DataAnnotations.Validation`](https://www.n
 > [!NOTE]
 > The [`Microsoft.AspNetCore.Components.DataAnnotations.Validation`](https://www.nuget.org/packages/Microsoft.AspNetCore.Components.DataAnnotations.Validation) package has a latest version of *release candidate* at [Nuget.org](https://www.nuget.org/packages/Microsoft.AspNetCore.Components.DataAnnotations.Validation). Continue to use the *experimental* release candidate package at this time. The package's assembly might be moved to either the framework or the runtime in a future release. Watch the [Announcements GitHub repository](https://github.com/aspnet/Announcements), the [dotnet/aspnetcore GitHub repository](https://github.com/dotnet/aspnetcore), or this topic section for further updates.
 
-### [CompareProperty] attribute
+::: moniker range="< aspnetcore-5.0"
+
+### `[CompareProperty]` attribute
 
 The <xref:System.ComponentModel.DataAnnotations.CompareAttribute> doesn't work well with the <xref:Microsoft.AspNetCore.Components.Forms.DataAnnotationsValidator> component because it doesn't associate the validation result with a specific member. This can result in inconsistent behavior between field-level validation and when the entire model is validated on a submit. The [`Microsoft.AspNetCore.Components.DataAnnotations.Validation`](https://www.nuget.org/packages/Microsoft.AspNetCore.Components.DataAnnotations.Validation) *experimental* package introduces an additional validation attribute, `ComparePropertyAttribute`, that works around these limitations. In a Blazor app, `[CompareProperty]` is a direct replacement for the [`[Compare]`](xref:System.ComponentModel.DataAnnotations.CompareAttribute) attribute.
+
+::: moniker-end
 
 ### Nested models, collection types, and complex types
 

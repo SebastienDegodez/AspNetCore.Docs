@@ -5,21 +5,26 @@ description: Learn how to secure an ASP.NET Core Blazor WebAssembly standalone a
 monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
 ms.custom: "devx-track-csharp, mvc"
-ms.date: 10/08/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+ms.date: 10/27/2020
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: blazor/security/webassembly/standalone-with-azure-active-directory
 ---
 # Secure an ASP.NET Core Blazor WebAssembly standalone app with Azure Active Directory
 
 By [Javier Calvarro Nelson](https://github.com/javiercn) and [Luke Latham](https://github.com/guardrex)
 
-To create a [standalone Blazor WebAssembly app](xref:blazor/hosting-models#blazor-webassembly) that uses [Azure Active Directory (AAD)](https://azure.microsoft.com/services/active-directory/) for authentication:
-
-[Create an AAD tenant and web application](/azure/active-directory/develop/v2-overview):
-
-Register a AAD app in the **Azure Active Directory** > **App registrations** area of the Azure portal:
+This article covers how to create a [standalone Blazor WebAssembly app](xref:blazor/hosting-models#blazor-webassembly) that uses [Azure Active Directory (AAD)](https://azure.microsoft.com/services/active-directory/) for authentication.
 
 ::: moniker range=">= aspnetcore-5.0"
+
+> [!NOTE]
+> For Blazor WebAssembly apps created in Visual Studio that are configured to support accounts in an AAD organizational directory, Visual Studio doesn't currently configure Azure portal app registrations correctly on project generation. This will be addressed in a future release of Visual Studio.
+>
+> This article shows how to create the solution and Azure app portal registration with the .NET CLI `dotnet new` command and by manually creating the app registration in the Azure portal.
+>
+> If you prefer to create the solution and Azure app registration with Visual Studio before the IDE is updated, refer to **_each section of this article_** and confirm or update the app's configuration and the app's registration after Visual Studio creates the solution.
+
+Register an AAD app in the **Azure Active Directory** > **App registrations** area of the Azure portal:
 
 1. Provide a **Name** for the app (for example, **Blazor Standalone AAD**).
 1. Choose a **Supported account types**. You may select **Accounts in this organizational directory only** for this experience.
@@ -42,6 +47,8 @@ In **Authentication** > **Platform configurations** > **Single-page application 
 ::: moniker-end
 
 ::: moniker range="< aspnetcore-5.0"
+
+Register an AAD app in the **Azure Active Directory** > **App registrations** area of the Azure portal:
 
 1. Provide a **Name** for the app (for example, **Blazor Standalone AAD**).
 1. Choose a **Supported account types**. You may select **Accounts in this organizational directory only** for this experience.
@@ -86,7 +93,7 @@ The output location specified with the `-o|--output` option creates a project fo
 
 ::: moniker range=">= aspnetcore-5.0"
 
-[!INCLUDE[](~/includes/blazor-security/additional-scopes-standalone-AAD.md)]
+[!INCLUDE[](~/blazor/includes/security/additional-scopes-standalone-AAD.md)]
 
 ::: moniker-end
 
@@ -171,7 +178,7 @@ options.ProviderOptions.AdditionalScopesToConsent.Add("{ADDITIONAL SCOPE URI}");
 
 ::: moniker range="< aspnetcore-5.0"
 
-[!INCLUDE[](~/includes/blazor-security/azure-scope-3x.md)]
+[!INCLUDE[](~/blazor/includes/security/azure-scope-3x.md)]
 
 ::: moniker-end
 
@@ -184,35 +191,35 @@ For more information, see the following sections of the *Additional scenarios* a
 
 ## Login mode
 
-[!INCLUDE[](~/includes/blazor-security/msal-login-mode.md)]
+[!INCLUDE[](~/blazor/includes/security/msal-login-mode.md)]
 
 ::: moniker-end
 
 ## Imports file
 
-[!INCLUDE[](~/includes/blazor-security/imports-file-standalone.md)]
+[!INCLUDE[](~/blazor/includes/security/imports-file-standalone.md)]
 
 ## Index page
 
-[!INCLUDE[](~/includes/blazor-security/index-page-msal.md)]
+[!INCLUDE[](~/blazor/includes/security/index-page-msal.md)]
 
 ## App component
 
-[!INCLUDE[](~/includes/blazor-security/app-component.md)]
+[!INCLUDE[](~/blazor/includes/security/app-component.md)]
 
 ## RedirectToLogin component
 
-[!INCLUDE[](~/includes/blazor-security/redirecttologin-component.md)]
+[!INCLUDE[](~/blazor/includes/security/redirecttologin-component.md)]
 
 ## LoginDisplay component
 
-[!INCLUDE[](~/includes/blazor-security/logindisplay-component.md)]
+[!INCLUDE[](~/blazor/includes/security/logindisplay-component.md)]
 
 ## Authentication component
 
-[!INCLUDE[](~/includes/blazor-security/authentication-component.md)]
+[!INCLUDE[](~/blazor/includes/security/authentication-component.md)]
 
-[!INCLUDE[](~/includes/blazor-security/troubleshoot.md)]
+[!INCLUDE[](~/blazor/includes/security/troubleshoot.md)]
 
 ## Additional resources
 

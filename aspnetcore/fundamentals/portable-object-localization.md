@@ -4,7 +4,7 @@ author: sebastienros
 description: This article introduces Portable Object files and outlines steps for using them in an ASP.NET Core application with the Orchard Core framework.
 ms.author: scaddie
 ms.date: 09/26/2017
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: fundamentals/portable-object-localization
 ---
 # Configure portable object localization in ASP.NET Core
@@ -21,7 +21,7 @@ This article walks through the steps for using Portable Object (PO) files in an 
 
 ## What is a PO file?
 
-PO files are distributed as text files containing the translated strings for a given language. Some advantages of using PO files instead *.resx* files include:
+PO files are distributed as text files containing the translated strings for a given language. Some advantages of using PO files instead of *.resx* files include:
 - PO files support pluralization; *.resx* files don't support pluralization.
 - PO files aren't compiled like *.resx* files. As such, specialized tooling and build steps aren't required.
 - PO files work well with collaborative online editing tools.

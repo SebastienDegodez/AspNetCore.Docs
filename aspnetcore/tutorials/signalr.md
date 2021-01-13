@@ -5,7 +5,7 @@ description: In this tutorial, you create a chat app that uses ASP.NET Core Sign
 ms.author: bradyg
 ms.custom: mvc
 ms.date: 11/21/2019
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: tutorials/signalr
 
 # Customer intent: As a developer, I want to get a quick proof-of-concept app running, so I can get a practical introduction to ASP.NET Core SignalR.
@@ -68,7 +68,8 @@ At the end, you'll have a working chat app:
 
    ```dotnetcli
    dotnet new webapp -o SignalRChat
-   code -r SignalRChat
+   cd SignalRChat
+   code -r .
    ```
 
 # [Visual Studio for Mac](#tab/visual-studio-mac)

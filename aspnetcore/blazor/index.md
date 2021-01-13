@@ -4,9 +4,9 @@ author: guardrex
 description: Explore ASP.NET Core Blazor, a way to build interactive client-side web UI with .NET in an ASP.NET Core app.
 monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
-ms.custom: "mvc, seoapril2019"
+ms.custom: "mvc, seoapril2019, devx-track-js"
 ms.date: 09/25/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: blazor/index
 ---
 # Introduction to ASP.NET Core Blazor
@@ -109,7 +109,7 @@ When a Blazor WebAssembly app is built and run in a browser:
 * The assemblies and the [.NET runtime](/dotnet/framework/get-started/overview) are downloaded to the browser.
 * Blazor WebAssembly bootstraps the .NET runtime and configures the runtime to load the assemblies for the app. The Blazor WebAssembly runtime uses JavaScript interop to handle DOM manipulation and browser API calls.
 
-The size of the published app, its *payload size*, is a critical performance factor for an app's useability. A large app takes a relatively long time to download to a browser, which diminishes the user experience. Blazor WebAssembly optimizes payload size to reduce download times:
+The size of the published app, its *payload size*, is a critical performance factor for an app's usability. A large app takes a relatively long time to download to a browser, which diminishes the user experience. Blazor WebAssembly optimizes payload size to reduce download times:
 
 ::: moniker range=">= aspnetcore-5.0"
 
@@ -158,6 +158,6 @@ APIs that aren't applicable inside of a web browser (for example, accessing the 
 * <xref:blazor/call-javascript-from-dotnet>
 * <xref:blazor/call-dotnet-from-javascript>
 * [C# Guide](/dotnet/csharp/)
-* <xref:mvc/views/razor>
+* [Razor syntax reference for ASP.NET Core](xref:mvc/views/razor)
 * [HTML](https://www.w3.org/html/)
 * [Awesome Blazor](https://github.com/AdrienTorris/awesome-blazor) community links

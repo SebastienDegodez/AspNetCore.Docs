@@ -5,8 +5,8 @@ description: Discover how components can be included in Blazor apps from an exte
 monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
 ms.custom: mvc
-ms.date: 07/27/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+ms.date: 01/12/2021
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: blazor/components/class-libraries
 ---
 # ASP.NET Core Razor components class libraries
@@ -33,7 +33,7 @@ Just as components are regular .NET types, components provided by an RCL are nor
    1. Right-click the solution. Select **Add** > **Existing Project**.
    1. Navigate to the RCL's project file.
    1. Select the RCL's project file (`.csproj`).
-1. Add a reference the RCL from the app:
+1. Add a reference to the RCL from the app:
    1. Right-click the app project. Select **Add** > **Reference**.
    1. Select the RCL project. Select **OK**.
 
@@ -106,7 +106,11 @@ Optionally, include the `@using ComponentLibrary` directive in the top-level `_I
 
 ::: moniker range=">= aspnetcore-5.0"
 
-To provide `Component1`'s `my-component` CSS class to the component, link to the library's stylesheet using the framework's [`Link` component](xref:blazor/fundamentals/additional-scenarios#influence-html-head-tag-elements) in `Component1.razor`:
+For library components that use [CSS isolation](xref:blazor/components/css-isolation), there's no need to explicitly link the library's individual component stylesheets in the app that consumes the library. The component styles are automatically made available to the consuming app.
+
+<!-- REACTIVATE WHEN HEAD COMPONENTS COME BACK AT 6.0
+
+To provide additional library component styles from stylesheets in the library's `wwwroot` folder, link the stylesheets using the framework's [`Link` component](xref:blazor/fundamentals/additional-scenarios#influence-html-head-tag-elements) in `Component1.razor`:
 
 ```razor
 <div class="my-component">
@@ -118,19 +122,27 @@ To provide `Component1`'s `my-component` CSS class to the component, link to the
 </div>
 ```
 
-To provide the stylesheet across the app, you can alternatively link to the library's stylesheet in the app's `wwwroot/index.html` file (Blazor WebAssembly) or `Pages/_Host.cshtml` file (Blazor Server):
+NEXT PARAGRAPH: RECAST TO 'CAN ALSO ADOPT ...'
+
+-->
+
+To provide additional library component styles from stylesheets in the library's `wwwroot` folder, link the stylesheets in the consuming app's `wwwroot/index.html` file (Blazor WebAssembly) or `Pages/_Host.cshtml` file (Blazor Server):
 
 ```html
 <head>
     ...
-    <link href="_content/ComponentLibrary/styles.css" rel="stylesheet" />
+    <link href="_content/ComponentLibrary/additionalStyles.css" rel="stylesheet" />
 </head>
 ```
+
+<!-- REACTIVATE WHEN HEAD COMPONENTS COME BACK AT 6.0
 
 When the `Link` component is used in a child component, the linked asset is also available to any other child component of the parent component as long as the child with the `Link` component is rendered. The distinction between using the `Link` component in a child component and placing a `<link>` HTML tag in `wwwroot/index.html` or `Pages/_Host.cshtml` is that a framework component's rendered HTML tag:
 
 * Can be modified by application state. A hard-coded `<link>` HTML tag can't be modified by application state.
 * Is removed from the HTML `<head>` when the parent component is no longer rendered.
+
+-->
 
 ::: moniker-end
 
@@ -208,6 +220,7 @@ Upload the package to NuGet using the [`dotnet nuget push`](/dotnet/core/tools/d
 
 * <xref:razor-pages/ui-class>
 * [Add an XML Intermediate Language (IL) Trimmer configuration file to a library](xref:blazor/host-and-deploy/configure-trimmer)
+* [CSS isolation support with Razor class libraries](xref:blazor/components/css-isolation#razor-class-library-rcl-support)
 
 ::: moniker-end
 

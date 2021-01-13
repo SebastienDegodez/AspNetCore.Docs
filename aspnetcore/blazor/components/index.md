@@ -5,13 +5,13 @@ description: Learn how to create and use Razor components, including how to bind
 monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
 ms.custom: mvc
-ms.date: 08/19/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+ms.date: 11/25/2020
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: blazor/components/index
 ---
 # Create and use ASP.NET Core Razor components
 
-By [Luke Latham](https://github.com/guardrex), [Daniel Roth](https://github.com/danroth27), and [Tobias Bartsch](https://www.aveo-solutions.com/)
+By [Luke Latham](https://github.com/guardrex), [Daniel Roth](https://github.com/danroth27), [Scott Addie](https://github.com/scottaddie), and [Tobias Bartsch](https://www.aveo-solutions.com/)
 
 [View or download sample code](https://github.com/dotnet/AspNetCore.Docs/tree/master/aspnetcore/blazor/common/samples/) ([how to download](xref:index#how-to-download-a-sample))
 
@@ -23,7 +23,7 @@ Components are implemented in [Razor](xref:mvc/views/razor) component files (`.r
 
 ### Razor syntax
 
-Razor components in Blazor apps extensively use Razor syntax. If you aren't familiar with the Razor markup language, we recommend reading <xref:mvc/views/razor> before proceeding.
+Razor components in Blazor apps extensively use Razor syntax. If you aren't familiar with the Razor markup language, we recommend reading [Razor syntax reference for ASP.NET Core](xref:mvc/views/razor) before proceeding.
 
 When accessing the content on Razor syntax, pay special attention to the following sections:
 
@@ -227,27 +227,56 @@ If a component contains an HTML element with an uppercase first letter that does
 
 Components can receive route parameters from the route template provided in the [`@page`][9] directive. The router uses route parameters to populate the corresponding component parameters.
 
+::: moniker range=">= aspnetcore-5.0"
+
+Optional parameters are supported. In the following example, the `text` optional parameter assigns the value of the route segment to the component's `Text` property. If the segment isn't present, the value of `Text` is set to `fantastic`.
+
 `Pages/RouteParameter.razor`:
 
-[!code-razor[](index/samples_snapshot/RouteParameter.razor?highlight=2,7-8)]
+[!code-razor[](index/samples_snapshot/RouteParameter-5x.razor?highlight=1,6-7)]
+
+::: moniker-end
+
+::: moniker range="< aspnetcore-5.0"
+
+`Pages/RouteParameter.razor`:
+
+[!code-razor[](index/samples_snapshot/RouteParameter-3x.razor?highlight=2,7-8)]
 
 Optional parameters aren't supported, so two [`@page`][9] directives are applied in the preceding example. The first permits navigation to the component without a parameter. The second [`@page`][9] directive receives the `{text}` route parameter and assigns the value to the `Text` property.
+
+::: moniker-end
 
 For information on catch-all route parameters (`{*pageRoute}`), which capture paths across multiple folder boundaries, see <xref:blazor/fundamentals/routing#catch-all-route-parameters>.
 
 ### Component parameters
 
-Components can have *component parameters*, which are defined using public properties on the component class with the [`[Parameter]`](xref:Microsoft.AspNetCore.Components.ParameterAttribute) attribute. Use attributes to specify arguments for a component in markup.
+Components can have *component parameters*, which are defined using public simple or complex properties on the component class with the [`[Parameter]`](xref:Microsoft.AspNetCore.Components.ParameterAttribute) attribute. Use attributes to specify arguments for a component in markup.
 
 `Components/ChildComponent.razor`:
 
-[!code-razor[](../common/samples/3.x/BlazorWebAssemblySample/Components/ChildComponent.razor?highlight=2,11-12)]
+[!code-razor[](../common/samples/5.x/BlazorWebAssemblySample/Components/ChildComponent.razor?highlight=2,11-12)]
+
+Component parameters can be assigned a default value:
+
+```csharp
+[Parameter]
+public string Title { get; set; } = "Panel Title from Child";
+```
 
 In the following example from the sample app, the `ParentComponent` sets the value of the `Title` property of the `ChildComponent`.
 
 `Pages/ParentComponent.razor`:
 
 [!code-razor[](index/samples_snapshot/ParentComponent.razor?highlight=5-6)]
+
+By convention, an attribute value that consists of C# code is assigned to a parameter using [Razor's reserved `@` symbol](xref:mvc/views/razor#razor-syntax):
+
+* Parent field or property: `Title="@{FIELD OR PROPERTY}`, where the placeholder `{FIELD OR PROPERTY}` is a C# field or property of the parent component.
+* Result of a method: `Title="@{METHOD}"`, where the placeholder `{METHOD}` is a C# method of the parent component.
+* [Implicit or explicit expression](xref:mvc/views/razor#implicit-razor-expressions): `Title="@({EXPRESSION})"`, where the placeholder `{EXPRESSION}` is a C# expression.
+  
+For more information, see [Razor syntax reference for ASP.NET Core](xref:mvc/views/razor).
 
 > [!WARNING]
 > Don't create components that write to their own *component parameters*, use a private field instead. For more information, see the [Overwritten parameters](#overwritten-parameters) section.
@@ -260,7 +289,7 @@ In the following example, the `ChildComponent` has a `ChildContent` property tha
 
 `Components/ChildComponent.razor`:
 
-[!code-razor[](../common/samples/3.x/BlazorWebAssemblySample/Components/ChildComponent.razor?highlight=3,14-15)]
+[!code-razor[](../common/samples/5.x/BlazorWebAssemblySample/Components/ChildComponent.razor?highlight=3,14-15)]
 
 > [!NOTE]
 > The property receiving the <xref:Microsoft.AspNetCore.Components.RenderFragment> content must be named `ChildContent` by convention.
@@ -277,7 +306,7 @@ Due to the way that Blazor renders child content, rendering components inside a 
 > @for (int c = 0; c < 10; c++)
 > {
 >     var current = c;
->     <ChildComponent Param1="@c">
+>     <ChildComponent Title="@c">
 >         Child Content: Count: @current
 >     </ChildComponent>
 > }
@@ -288,7 +317,7 @@ Due to the way that Blazor renders child content, rendering components inside a 
 > ```razor
 > @foreach(var c in Enumerable.Range(0,10))
 > {
->     <ChildComponent Param1="@c">
+>     <ChildComponent Title="@c">
 >         Child Content: Count: @c
 >     </ChildComponent>
 > }
@@ -422,7 +451,7 @@ Component references provide a way to reference a component instance so that you
 }
 ```
 
-When the component is rendered, the `loginDialog` field is populated with the `MyLoginDialog` child component instance. You can then invoke .NET methods on the component instance.
+When the component is rendered, the `loginDialog` field is populated with the `CustomLoginDialog` child component instance. You can then invoke .NET methods on the component instance.
 
 > [!IMPORTANT]
 > The `loginDialog` variable is only populated after the component is rendered and its output includes the `MyLoginDialog` element. Until the component is rendered, there's nothing to reference.
@@ -611,15 +640,29 @@ Ensure that values used for [`@key`][5] don't clash. If clashing values are dete
 
 ## Overwritten parameters
 
-New parameter values are supplied, typically overwriting existing ones, when the parent component rerenders.
+The Blazor framework generally imposes safe parent-to-child parameter assignment:
 
-Consider the following `Expander` component that:
+* Parameters aren't overwritten unexpectedly.
+* Side-effects are minimized. For example, additional renders are avoided because they may create infinite rendering loops.
+
+A child component receives new parameter values that possibly overwrite existing values when the parent component rerenders. Accidentially overwriting parameter values in a child component often occurs when developing the component with one or more data-bound parameters and the developer writes directly to a parameter in the child:
+
+* The child component is rendered with one or more parameter values from the parent component.
+* The child writes directly to the value of a parameter.
+* The parent component rerenders and overwrites the value of the child's parameter.
+
+The potential for overwriting paramater values extends into the child component's property setters, too.
+
+**Our general guidance is not to create components that directly write to their own parameters.**
+
+Consider the following faulty `Expander` component that:
 
 * Renders child content.
-* Toggles showing child content with a component parameter.
+* Toggles showing child content with a component parameter (`Expanded`).
+* The component writes directly to the `Expanded` parameter, which demonstrates the problem with overwritten parameters and should be avoided.
 
 ```razor
-<div @onclick="@Toggle" class="card bg-light mb-3" style="width:30rem">
+<div @onclick="Toggle" class="card bg-light mb-3" style="width:30rem">
     <div class="card-body">
         <h2 class="card-title">Toggle (<code>Expanded</code> = @Expanded)</h2>
 
@@ -668,10 +711,10 @@ The following revised `Expander` component:
 
 * Accepts the `Expanded` component parameter value from the parent.
 * Assigns the component parameter value to a *private field* (`expanded`) in the [OnInitialized event](xref:blazor/components/lifecycle#component-initialization-methods).
-* Uses the private field to maintain its internal toggle state.
+* Uses the private field to maintain its internal toggle state, which demonstrates how to avoid writing directly to a parameter.
 
 ```razor
-<div @onclick="@Toggle" class="card bg-light mb-3" style="width:30rem">
+<div @onclick="Toggle" class="card bg-light mb-3" style="width:30rem">
     <div class="card-body">
         <h2 class="card-title">Toggle (<code>expanded</code> = @expanded)</h2>
 
@@ -702,6 +745,8 @@ The following revised `Expander` component:
     }
 }
 ```
+
+For additional information, see [Blazor Two Way Binding Error (dotnet/aspnetcore #24599)](https://github.com/dotnet/aspnetcore/issues/24599). 
 
 ## Apply an attribute
 
@@ -739,7 +784,7 @@ If `IsCompleted` is `false`, the check box is rendered as:
 <input type="checkbox" />
 ```
 
-For more information, see <xref:mvc/views/razor>.
+For more information, see [Razor syntax reference for ASP.NET Core](xref:mvc/views/razor).
 
 > [!WARNING]
 > Some HTML attributes, such as [`aria-pressed`](https://developer.mozilla.org/docs/Web/Accessibility/ARIA/Roles/button_role#Toggle_buttons), don't function properly when the .NET type is a `bool`. In those cases, use a `string` type instead of a `bool`.
@@ -832,18 +877,76 @@ Similarly, SVG images are supported in the CSS rules of a stylesheet file (`.css
 
 However, inline SVG markup isn't supported in all scenarios. If you place an `<svg>` tag directly into a component file (`.razor`), basic image rendering is supported but many advanced scenarios aren't yet supported. For example, `<use>` tags aren't currently respected, and [`@bind`][10] can't be used with some SVG tags. For more information, see [SVG support in Blazor (dotnet/aspnetcore #18271)](https://github.com/dotnet/aspnetcore/issues/18271).
 
+## Whitespace rendering behavior
+
+::: moniker range=">= aspnetcore-5.0"
+
+Unless the [`@preservewhitespace`](xref:mvc/views/razor#preservewhitespace) directive is used with a value of `true`, extra whitespace is removed by default if:
+
+* Leading or trailing within an element.
+* Leading or trailing within a `RenderFragment` parameter. For example, child content passed to another component.
+* It precedes or follows a C# code block, such as `@if` or `@foreach`.
+
+Whitespace removal might affect the rendered output when using a CSS rule, such as `white-space: pre`. To disable this performance optimization and preserve the whitespace, take one of the following actions:
+
+* Add the `@preservewhitespace true` directive at the top of the `.razor` file to apply the preference to a specific component.
+* Add the `@preservewhitespace true` directive inside an `_Imports.razor` file to apply the preference to an entire subdirectory or the entire project.
+
+In most cases, no action is required, as apps typically continue to behave normally (but faster). If stripping whitespace causes any problem for a particular component, use `@preservewhitespace true` in that component to disable this optimization.
+
+::: moniker-end
+
+::: moniker range="< aspnetcore-5.0"
+
+Whitespace is retained in a component's source code. Whitespace-only text renders in the browser's Document Object Model (DOM) even when there's no visual effect.
+
+Consider the following Razor component code:
+
+```razor
+<ul>
+    @foreach (var item in Items)
+    {
+        <li>
+            @item.Text
+        </li>
+    }
+</ul>
+```
+
+The preceding example renders the following unnecessary whitespace:
+
+* Outside of the `@foreach` code block.
+* Around the `<li>` element.
+* Around the `@item.Text` output.
+
+A list containing 100 items results in 402 areas of whitespace, and none of the extra whitespace visually affects the rendered output.
+
+When rendering static HTML for components, whitespace inside a tag isn't preserved. For example, view the source of the following component in rendered output:
+
+```razor
+<img     alt="My image"   src="img.png"     />
+```
+
+Whitespace isn't preserved from the preceding Razor markup:
+
+```razor
+<img alt="My image" src="img.png" />
+```
+
+::: moniker-end
+
 ## Additional resources
 
 * <xref:blazor/security/server/threat-mitigation>: Includes guidance on building Blazor Server apps that must contend with resource exhaustion.
 
 <!--Reference links in article-->
-[1]: <xref:mvc/views/razor#code>
-[2]: <xref:mvc/views/razor#using>
-[3]: <xref:mvc/views/razor#attributes>
-[4]: <xref:mvc/views/razor#ref>
-[5]: <xref:mvc/views/razor#key>
-[6]: <xref:mvc/views/razor#inherits>
-[7]: <xref:mvc/views/razor#attribute>
-[8]: <xref:mvc/views/razor#namespace>
-[9]: <xref:mvc/views/razor#page>
-[10]: <xref:mvc/views/razor#bind>
+[1]: [Razor syntax reference for ASP.NET Core](xref:mvc/views/razor#code)
+[2]: [Razor syntax reference for ASP.NET Core](xref:mvc/views/razor#using)
+[3]: [Razor syntax reference for ASP.NET Core](xref:mvc/views/razor#attributes)
+[4]: [Razor syntax reference for ASP.NET Core](xref:mvc/views/razor#ref)
+[5]: [Razor syntax reference for ASP.NET Core](xref:mvc/views/razor#key)
+[6]: [Razor syntax reference for ASP.NET Core](xref:mvc/views/razor#inherits)
+[7]: [Razor syntax reference for ASP.NET Core](xref:mvc/views/razor#attribute)
+[8]: [Razor syntax reference for ASP.NET Core](xref:mvc/views/razor#namespace)
+[9]: [Razor syntax reference for ASP.NET Core](xref:mvc/views/razor#page)
+[10]: [Razor syntax reference for ASP.NET Core](xref:mvc/views/razor#bind)

@@ -5,8 +5,8 @@ description: Learn how to host and deploy a Blazor app using ASP.NET Core, Conte
 monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
 ms.custom: mvc
-ms.date: 10/09/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+ms.date: 01/12/2021
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: blazor/host-and-deploy/webassembly
 ---
 # Host and deploy ASP.NET Core Blazor WebAssembly
@@ -118,9 +118,17 @@ For information on deploying to Azure App Service, see <xref:tutorials/publish-t
 
 ### App configuration
 
-To configure a hosted Blazor solution to serve multiple Blazor WebAssembly apps:
+Hosted Blazor solutions can serve multiple Blazor WebAssembly apps.
 
-* Use an existing hosted Blazor solution or create a new solution from the Blazor Hosted project template.
+> [!NOTE]
+> The example in this section references the use of a Visual Studio *solution*, but the use of Visual Studio and a Visual Studio solution isn't required for multiple client apps to work in a hosted Blazor WebAssembly apps scenario. If you aren't using Visual Studio, ignore the `{SOLUTION NAME}.sln` file and any other files created for Visual Studio.
+
+In the following example:
+
+* The initial (first) client app is the default client project of a solution created from the Blazor WebAssembly project template. The first client app is accessible in a browser from the URL `/FirstApp` on either port 5001 or with a host of `firstapp.com`.
+* A second client app is added to the solution, `SecondBlazorApp.Client`. The second client app is accessible in a browser from the the URL `/SecondApp` on either port 5002 or with a host of `secondapp.com`.
+
+Use an existing hosted Blazor solution or create a new solution from the Blazor Hosted project template:
 
 * In the client app's project file, add a `<StaticWebAssetBasePath>` property to the `<PropertyGroup>` with a value of `FirstApp` to set the base path for the project's static assets:
 
@@ -133,9 +141,19 @@ To configure a hosted Blazor solution to serve multiple Blazor WebAssembly apps:
 
 * Add a second client app to the solution:
 
-  * Add a folder named `SecondClient` to the solution's folder.
+  * Add a folder named `SecondClient` to the solution's folder. The solution folder created from the project template contains the following solution file and folders after the `SecondClient` folder is added:
+  
+    * `Client` (folder)
+    * `SecondClient` (folder)
+    * `Server` (folder)
+    * `Shared` (folder)
+    * `{SOLUTION NAME}.sln` (file)
+    
+    The placeholder `{SOLUTION NAME}` is the solution's name.
+
   * Create a Blazor WebAssembly app named `SecondBlazorApp.Client` in the `SecondClient` folder from the Blazor WebAssembly project template.
-  * In the app's project file:
+
+  * In the `SecondBlazorApp.Client` app's project file:
 
     * Add a `<StaticWebAssetBasePath>` property to the `<PropertyGroup>` with a value of `SecondApp`:
 
@@ -156,14 +174,17 @@ To configure a hosted Blazor solution to serve multiple Blazor WebAssembly apps:
 
       The placeholder `{SOLUTION NAME}` is the solution's name.
 
-* In the server app's project file, create a project reference for the added client app:
+* In the server app's project file, create a project reference for the added `SecondBlazorApp.Client` client app:
 
   ```xml
   <ItemGroup>
-    ...
+    <ProjectReference Include="..\Client\{SOLUTION NAME}.Client.csproj" />
     <ProjectReference Include="..\SecondClient\SecondBlazorApp.Client.csproj" />
+    <ProjectReference Include="..\Shared\{SOLUTION NAME}.Shared.csproj" />
   </ItemGroup>
   ```
+  
+  The placeholder `{SOLUTION NAME}` is the solution's name.
 
 * In the server app's `Properties/launchSettings.json` file, configure the `applicationUrl` of the Kestrel profile (`{SOLUTION NAME}.Server`) to access the client apps at ports 5001 and 5002:
 
@@ -273,6 +294,8 @@ Use the following approaches for static assets:
   <img alt="..." src="_content/{LIBRARY NAME}/{ASSET FILE NAME}" />
   ```
 
+<!-- HOLD for reactivation at 5.x
+
 ::: moniker range=">= aspnetcore-5.0"
 
 Components provided to a client app by a class library are referenced normally. If any components require stylesheets or JavaScript files, use either of the following approaches to obtain the static assets:
@@ -286,9 +309,15 @@ The preceding approaches are demonstrated in the following examples.
 
 ::: moniker range="< aspnetcore-5.0"
 
+-->
+
 Components provided to a client app by a class library are referenced normally. If any components require stylesheets or JavaScript files, the client app's `wwwroot/index.html` file must include the correct static asset links. These approaches are demonstrated in the following examples.
 
+<!-- HOLD for reactivation at 5.x
+
 ::: moniker-end
+
+-->
 
 Add the following `Jeep` component to one of the client apps. The `Jeep` component uses:
 
@@ -321,6 +350,8 @@ Add the following `Jeep` component to one of the client apps. The `Jeep` compone
 
 > [!WARNING]
 > Do **not** publish images of vehicles publicly unless you own the images. Otherwise, you risk copyright infringement.
+
+<!-- HOLD for reactivation at 5.x
 
 ::: moniker range=">= aspnetcore-5.0"
 
@@ -355,6 +386,8 @@ An alternative to using the [`Link` component](xref:blazor/fundamentals/addition
 
 ::: moniker range="< aspnetcore-5.0"
 
+-->
+
 The library's `jeep-yj.png` image can also be added to the library's `Component1` component (`Component1.razor`):
 
 ```razor
@@ -380,7 +413,11 @@ The client app's `wwwroot/index.html` file requests the library's stylesheet wit
 </head>
 ```
 
+<!-- HOLD for reactivation at 5.x
+
 ::: moniker-end
+
+-->
 
 Add navigation to the `Jeep` component in the client app's `NavMenu` component (`Shared/NavMenu.razor`):
 
@@ -490,7 +527,16 @@ Removing the handler or disabling inheritance is performed in addition to [confi
 
 #### Brotli and Gzip compression
 
-IIS can be configured via `web.config` to serve Brotli or Gzip compressed Blazor assets. For an example configuration, see [`web.config`](https://github.com/dotnet/AspNetCore.Docs/blob/master/aspnetcore/blazor/host-and-deploy/webassembly/_samples/web.config?raw=true).
+*This section only applies to standalone Blazor WebAssembly apps. Hosted Blazor apps use a default ASP.NET Core app `web.config` file, not the file linked in this section.*
+
+IIS can be configured via `web.config` to serve Brotli or Gzip compressed Blazor assets for standalone Blazor WebAssembly apps. For an example configuration file, see [`web.config`](https://github.com/dotnet/AspNetCore.Docs/blob/master/aspnetcore/blazor/host-and-deploy/webassembly/_samples/web.config?raw=true).
+
+Additional configuration of the example `web.config` file might be required in the following scenarios:
+
+* The app's specification calls for either of the following:
+  * Serving compressed files that aren't configured by the example `web.config` file.
+  * Serving compressed files configured by the example `web.config` file in an uncompressed format.
+* The server's IIS configuration (for example, `applicationHost.config`) provides server-level IIS defaults. Depending on the server-level configuration, the app might require a different IIS configuration than what the example `web.config` file contains.
 
 #### Troubleshooting
 
@@ -556,18 +602,6 @@ http {
 Increase the value if browser developer tools or a network traffic tool indicates that requests are receiving a *503 - Service Unavailable* status code.
 
 For more information on production Nginx web server configuration, see [Creating NGINX Plus and NGINX Configuration Files](https://docs.nginx.com/nginx/admin-guide/basic-functionality/managing-configuration-files/).
-
-### Nginx in Docker
-
-To host Blazor in Docker using Nginx, setup the Dockerfile to use the Alpine-based Nginx image. Update the Dockerfile to copy the `nginx.config` file into the container.
-
-Add one line to the Dockerfile, as shown in the following example:
-
-```dockerfile
-FROM nginx:alpine
-COPY ./bin/Release/netstandard2.0/publish /usr/share/nginx/html/
-COPY nginx.conf /etc/nginx/nginx.conf
-```
 
 ### Apache
 
@@ -811,7 +845,7 @@ If service worker assets are also in use, add the following command:
 On Linux or macOS:
 
 ```console
-for f in _framework/_bin/*; do mv "$f" "`echo $f | sed -e 's/\.dll\b/.bin/g'`"; done
+for f in _framework/_bin/*; do mv "$f" "`echo $f | sed -e 's/\.dll/.bin/g'`"; done
 sed -i 's/\.dll"/.bin"/g' _framework/blazor.boot.json
 ```
 
@@ -868,9 +902,7 @@ When Blazor WebAssembly downloads an app's startup files, it instructs the brows
 
 If your web server returns responses that don't match the expected SHA-256 hashes, you will see an error similar to the following appear in the browser's developer console:
 
-```
-Failed to find a valid digest in the 'integrity' attribute for resource 'https://myapp.example.com/_framework/MyBlazorApp.dll' with computed SHA-256 integrity 'IIa70iwvmEg5WiDV17OpQ5eCztNYqL186J56852RpJY='. The resource has been blocked.
-```
+> Failed to find a valid digest in the 'integrity' attribute for resource 'https://myapp.example.com/\_framework/MyBlazorApp.dll' with computed SHA-256 integrity 'IIa70iwvmEg5WiDV17OpQ5eCztNYqL186J56852RpJY='. The resource has been blocked.
 
 In most cases, this is *not* a problem with integrity checking itself. Instead, it means there is some other problem, and the integrity check is warning you about that other problem.
 
@@ -891,12 +923,41 @@ To diagnose which of these applies in your case:
  1. Note which file is triggering the error by reading the error message.
  1. Open your browser's developer tools and look in the *Network* tab. If necessary, reload the page to see the list of requests and responses. Find the file that is triggering the error in that list.
  1. Check the HTTP status code in the response. If the server returns anything other than *200 - OK* (or another 2xx status code), then you have a server-side problem to diagnose. For example, status code 403 means there's an authorization problem, whereas status code 500 means the server is failing in an unspecified manner. Consult server-side logs to diagnose and fix the app.
- 1. If the status code is *200 - OK* for the resource, look at the response content in browser's developer tools and check that the content matchs up with the data expected. For example, a common problem is to misconfigure routing so that requests return your `index.html` data even for other files. Make sure that responses to `.wasm` requests are WebAssembly binaries and that responses to `.dll` requests are .NET assembly binaries. If not, you have a server-side routing problem to diagnose.
+ 1. If the status code is *200 - OK* for the resource, look at the response content in browser's developer tools and check that the content matches up with the data expected. For example, a common problem is to misconfigure routing so that requests return your `index.html` data even for other files. Make sure that responses to `.wasm` requests are WebAssembly binaries and that responses to `.dll` requests are .NET assembly binaries. If not, you have a server-side routing problem to diagnose.
+ 1. Seek to validate the app's published and deployed output with the [Troubleshoot integrity PowerShell script](#troubleshoot-integrity-powershell-script).
 
 If you confirm that the server is returning plausibly correct data, there must be something else modifying the contents in between build and delivery of the file. To investigate this:
 
  * Examine the build toolchain and deployment mechanism in case they're modifying files after the files are built. An example of this is when Git transforms file line endings, as described earlier.
  * Examine the web server or CDN configuration in case they're set up to modify responses dynamically (for example, trying to minify HTML). It's fine for the web server to implement HTTP compression (for example, returning `content-encoding: br` or `content-encoding: gzip`), since this doesn't affect the result after decompression. However, it's *not* fine for the web server to modify the uncompressed data.
+
+### Troubleshoot integrity PowerShell script
+
+Use the [`integrity.ps1`](https://github.com/dotnet/AspNetCore.Docs/blob/master/aspnetcore/blazor/host-and-deploy/webassembly/_samples/integrity.ps1?raw=true) PowerShell script to validate a published and deployed Blazor app. The script is provided as a starting point when the app has integrity issues that the Blazor framework can't identify. Customization of the script might be required for your apps.
+
+The script checks the files in the `publish` folder and downloaded from the deployed app to detect issues in the different manifests that contain integrity hashes. These checks should detect the most common problems:
+
+* You modified a file in the published output without realizing it.
+* The app wasn't correctly deployed to the deployment target, or something changed within the deployment target's environment.
+* There are differences between the deployed app and the output from publishing the app.
+
+Invoke the script with the following command in a PowerShell command shell:
+
+```powershell
+.\integrity.ps1 {BASE URL} {PUBLISH OUTPUT FOLDER}
+```
+
+Placeholders:
+
+* `{BASE URL}`: The URL of the deployed app.
+* `{PUBLISH OUTPUT FOLDER}`: The path to the app's `publish` folder or location where the app is published for deployment.
+
+> [!NOTE]
+> To clone the `dotnet/AspNetCore.Docs` GitHub repository to a system that uses the [Bitdefender](https://www.bitdefender.com) virus scanner, add an exception to Bitdefender for the `integrity.ps1` script. Add the exception to Bitdefender before cloning the repo to avoid having the script quarantined by the virus scanner. The following example is a typical path to the script for the cloned repo on a Windows system. Adjust the path as needed. The placeholder `{USER}` is the user's path segment.
+>
+> ```
+> C:\Users\{USER}\Documents\GitHub\AspNetCore.Docs\aspnetcore\blazor\host-and-deploy\webassembly\_samples\integrity.ps1
+> ```
 
 ### Disable integrity checking for non-PWA apps
 

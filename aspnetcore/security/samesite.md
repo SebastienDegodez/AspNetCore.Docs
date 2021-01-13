@@ -5,7 +5,7 @@ description: Learn how to use to SameSite cookies in ASP.NET Core
 ms.author: riande
 ms.custom: mvc
 ms.date: 12/03/2019
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR, Electron]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR, Electron]
 uid: security/samesite
 ---
 # Work with SameSite cookies in ASP.NET Core
@@ -148,7 +148,7 @@ In `Startup.Configure`, add code that calls <xref:Microsoft.AspNetCore.Builder.C
 
 In `Startup.ConfigureServices`, add code similar to the following:
 
-::: moniker range="= aspnetcore-3.1"
+::: moniker range=">= aspnetcore-3.1"
 
 [!code-csharp[](samesite/sample/Startup31.cs?name=snippet)]
 

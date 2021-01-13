@@ -6,7 +6,7 @@ monikerRange: '>= aspnetcore-2.1'
 ms.author: riande
 ms.custom: mvc
 ms.date: 09/05/2019
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: security/cookie-sharing
 ---
 # Share authentication cookies among ASP.NET apps
@@ -48,6 +48,8 @@ services.ConfigureApplicationCookie(options => {
     options.Cookie.Name = ".AspNet.SharedCookie";
 });
 ```
+
+**Note:** The preceding instructions don't work with `ITicketStore` (`CookieAuthenticationOptions.SessionStore`).  For more information, see [this GitHub issue](https://github.com/dotnet/AspNetCore.Docs/issues/21163).
 
 ## Share authentication cookies without ASP.NET Core Identity
 

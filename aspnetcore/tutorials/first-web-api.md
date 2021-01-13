@@ -3,9 +3,9 @@ title: "Tutorial: Create a web API with ASP.NET Core"
 author: rick-anderson
 description: Learn how to build a web API with ASP.NET Core.
 ms.author: riande
-ms.custom: mvc
+ms.custom: mvc, devx-track-js
 ms.date: 08/13/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR, Models]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR, Models]
 uid: tutorials/first-web-api
 ---
 
@@ -102,7 +102,7 @@ The following diagram shows the design of the app.
 
   ![macOS API template selection](first-web-api-mac/_static/api_template.png)
 
-* In the **Configure the new ASP.NET Core Web API** dialog, select the latest .NET Core 3.x **Target Framework**. Select **Next**.
+* In the **Configure the new ASP.NET Core Web API** dialog, select the latest .NET Core 5.x **Target Framework**. Select **Next**.
 
 * Enter *TodoApi* for the **Project Name** and then select **Create**.
 
@@ -132,7 +132,7 @@ Press Ctrl+F5 to run without the debugger.
   Visual Studio launches:
 
 * The IIS Express web server.
-* The default browser and navigates to `https://localhost:<port>/https://localhost:5001/swagger/index.html`, where `<port>` is a randomly chosen port number.
+* The default browser and navigates to `https://localhost:<port>/swagger/index.html`, where `<port>` is a randomly chosen port number.
 
 # [Visual Studio Code](#tab/visual-studio-code)
 
@@ -157,7 +157,7 @@ The Swagger page `/swagger/index.html` is displayed. Select **GET** > **Try it o
 -->
 Swagger is used to generate useful documentation and help pages for web APIs. This tutorial focuses on creating a web API. For more information on Swagger, see <xref:tutorials/web-api-help-pages-using-swagger>.
 
-Copy and past the **Request URL** in the browser:  `https://localhost:<port>/WeatherForecast`
+Copy and paste the **Request URL** in the browser:  `https://localhost:<port>/WeatherForecast`
 
 JSON similar to the following is returned:
 
@@ -253,10 +253,8 @@ The *database context* is the main class that coordinates Entity Framework funct
 ### Add NuGet packages
 
 * From the **Tools** menu, select **NuGet Package Manager > Manage NuGet Packages for Solution**.
-* Select the **Browse** tab, and then enter **Microsoft.
-**EntityFrameworkCore.SqlServer** in the search box.
+* Select the **Browse** tab, and then enter **Microsoft.EntityFrameworkCore.SqlServer** in the search box.
 <!-- https://github.com/dotnet/AspNetCore.Docs/issues/19782 Delete this line at RTM -->
-* Select the **Include prerelease** checkbox so the 5.0 RC version is available. 
 * Select **Microsoft.EntityFrameworkCore.SqlServer** in the left pane.
 * Select the **Project** check box in the right pane and then select **Install**.
 * Use the preceding instructions to add the **Microsoft.EntityFrameworkCore.InMemory** NuGet package.
@@ -313,8 +311,8 @@ Run the following commands:
 ```dotnetcli
 dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
 dotnet add package Microsoft.EntityFrameworkCore.Design
-dotnet tool install --global dotnet-aspnet-codegenerator
-dotnet tool update -g Dotnet-aspnet-codegenerator
+dotnet tool install -g dotnet-aspnet-codegenerator
+dotnet tool update -g dotnet-aspnet-codegenerator
 dotnet aspnet-codegenerator controller -name TodoItemsController -async -api -m TodoItem -dc TodoContext -outDir Controllers
 ```
 
@@ -519,7 +517,7 @@ A DTO may be used to:
 
 To demonstrate the DTO approach, update the `TodoItem` class to include a secret field:
 
-[!code-csharp[](first-web-api/samples/5.x/TodoApiDTO/Models/TodoItem.cs?name=snippet&highlight=6)]
+[!code-csharp[](first-web-api/samples/5.x/TodoApiDTO/Models/TodoItem.cs?name=snippet&highlight=8)]
 
 The secret field needs to be hidden from this app, but an administrative app could choose to expose it.
 
@@ -1347,7 +1345,7 @@ The `CreatedAtAction` method:
 
 * Build the project.
 * In Postman, set the HTTP method to `POST`.
-* Set the URI to `https://localhost:<port>/api/TodoItem`. For example, `https://localhost:5001/api/TodoItem`.
+* Set the URI to `https://localhost:<port>/api/Todo`. For example, `https://localhost:5001/api/Todo`.
 * Select the **Body** tab.
 * Select the **raw** radio button.
 * Set the type to **JSON (application/json)**.

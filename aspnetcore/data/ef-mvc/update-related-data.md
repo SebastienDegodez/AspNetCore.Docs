@@ -6,7 +6,7 @@ ms.author: riande
 ms.custom: mvc
 ms.date: 03/27/2019
 ms.topic: tutorial
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: data/ef-mvc/update-related-data
 ---
 
@@ -18,7 +18,7 @@ The following illustrations show some of the pages that you'll work with.
 
 ![Course Edit page](update-related-data/_static/course-edit.png)
 
-![Instructor Edit page](update-related-data/_static/instructor-edit-courses.png)
+![Edit Instructor page](update-related-data/_static/instructor-edit-courses.png)
 
 In this tutorial, you:
 
@@ -75,7 +75,7 @@ To optimize performance of the Course Details and Delete pages, add `AsNoTrackin
 
 In *Views/Courses/Create.cshtml*, add a "Select Department" option to the **Department** drop-down list, change the caption from **DepartmentID** to **Department**, and add a validation message.
 
-[!code-cshtml[](intro/samples/cu/Views/Courses/Create.cshtml?highlight=2-6&range=29-34)]
+[!code-cshtml[](intro/samples/cu/Views/Courses/Create.cshtml?highlight=2-6&range=29-35)]
 
 In *Views/Courses/Edit.cshtml*, make the same change for the Department field that you just did in *Create.cshtml*.
 

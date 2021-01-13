@@ -4,7 +4,7 @@ author: rick-anderson
 description: Learn about Razor markup syntax for embedding server-based code into webpages.
 ms.author: riande
 ms.date: 02/12/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: mvc/views/razor
 ---
 # Razor syntax reference for ASP.NET Core
@@ -596,7 +596,7 @@ The `@inject` directive enables the Razor Page to inject a service from the [ser
 
 *This scenario only applies to Razor components (.razor).*
 
-The `@layout` directive specifies a layout for a Razor component. Layout components are used to avoid code duplication and inconsistency. For more information, see <xref:blazor/layouts>.
+The `@layout` directive specifies a layout for routable Razor components that have an [`@page`](#page) directive. Layout components are used to avoid code duplication and inconsistency. For more information, see <xref:blazor/layouts>.
 
 ::: moniker-end
 
@@ -679,6 +679,20 @@ The `@page` directive has different effects depending on the type of the file wh
 ::: moniker range="< aspnetcore-3.0"
 
 The `@page` directive on the first line of a *.cshtml* file indicates that the file is a Razor Page. For more information, see <xref:razor-pages/index>.
+
+::: moniker-end
+
+::: moniker range=">= aspnetcore-5.0"
+
+### `@preservewhitespace`
+
+*This scenario only applies to Razor components (`.razor`).*
+
+When set to `false` (default), whitespace in the rendered markup from Razor components (`.razor`) is removed if:
+
+* Leading or trailing within an element.
+* Leading or trailing within a `RenderFragment` parameter. For example, child content passed to another component.
+* It precedes or follows a C# code block, such as `@if` or `@foreach`.
 
 ::: moniker-end
 

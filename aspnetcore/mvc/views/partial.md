@@ -5,7 +5,7 @@ description: Discover how to use partial views to break up large markup files an
 ms.author: riande
 ms.custom: mvc
 ms.date: 06/12/2019
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: mvc/views/partial
 ---
 # Partial views in ASP.NET Core
@@ -336,7 +336,7 @@ The second partial view renders the article's sections:
 
 ::: moniker range=">= aspnetcore-2.1"
 
-* <xref:mvc/views/razor>
+* [Razor syntax reference for ASP.NET Core](xref:mvc/views/razor)
 * <xref:mvc/views/tag-helpers/intro>
 * <xref:mvc/views/tag-helpers/builtin-th/partial-tag-helper>
 * <xref:mvc/views/view-components>
@@ -346,7 +346,7 @@ The second partial view renders the article's sections:
 
 ::: moniker range="< aspnetcore-2.1"
 
-* <xref:mvc/views/razor>
+* [Razor syntax reference for ASP.NET Core](xref:mvc/views/razor)
 * <xref:mvc/views/view-components>
 * <xref:mvc/controllers/areas>
 

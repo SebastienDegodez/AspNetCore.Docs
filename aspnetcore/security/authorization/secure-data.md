@@ -5,7 +5,7 @@ description: Learn how to create an ASP.NET Core web app with user data protecte
 ms.author: riande
 ms.date: 7/18/2020
 ms.custom: "mvc, seodec18"
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: security/authorization/secure-data
 ---
 
@@ -77,7 +77,7 @@ This tutorial is advanced. You should be familiar with:
 
 [Download](xref:index#how-to-download-a-sample) the [starter](https://github.com/dotnet/AspNetCore.Docs/tree/master/aspnetcore/security/authorization/secure-data/samples/) app.
 
-Run the app, tap the **ContactManager** link, and verify you can create, edit, and delete a contact.
+Run the app, tap the **ContactManager** link, and verify you can create, edit, and delete a contact. To create the starter app, see [Create the starter app](#create-the-starter-app).
 
 ## Secure user data
 

@@ -5,7 +5,7 @@ description: Learn which features are supported by the various ASP.NET Core Sign
 ms.author: bradyg
 ms.custom: mvc
 ms.date: 11/12/2019
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: signalr/client-features
 ---
 # ASP.NET Core SignalR clients
@@ -40,7 +40,7 @@ The table below shows the features and support for the clients that offer real-t
 | Server-Sent Events Transport |2.1.0|1.0.0|1.0.0|❌|
 | Long Polling Transport |2.1.0|1.0.0|1.0.0|3.0.0|
 | JSON Hub Protocol |2.1.0|1.0.0|1.0.0|1.0.0|
-| MessagePack Hub Protocol |2.1.0|1.0.0|1.0.0|❌|
+| MessagePack Hub Protocol |2.1.0|1.0.0|1.0.0|5.0.0|
 
 Support for enabling additional client features is tracked in [our issue tracker](https://github.com/dotnet/AspNetCore/issues).
 

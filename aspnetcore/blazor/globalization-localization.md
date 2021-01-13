@@ -6,7 +6,7 @@ monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
 ms.custom: mvc
 ms.date: 06/04/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: blazor/globalization-localization
 ---
 # ASP.NET Core Blazor globalization and localization
@@ -148,6 +148,19 @@ Localization is handled by the app in the following sequence of events:
 1. The browser opens a WebSocket connection to create an interactive Blazor Server session.
 1. The Localization Middleware reads the cookie and assigns the culture.
 1. The Blazor Server session begins with the correct culture.
+
+When working with a <xref:Microsoft.AspNetCore.Mvc.Razor.RazorPage>, use the <xref:Microsoft.AspNetCore.Mvc.Razor.RazorPage.Context> property:
+
+```razor
+@{
+    this.Context.Response.Cookies.Append(
+        CookieRequestCultureProvider.DefaultCookieName,
+        CookieRequestCultureProvider.MakeCookieValue(
+            new RequestCulture(
+                CultureInfo.CurrentCulture,
+                CultureInfo.CurrentUICulture)));
+}
+```
 
 #### Provide UI to choose the culture
 

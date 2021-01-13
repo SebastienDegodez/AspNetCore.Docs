@@ -6,7 +6,7 @@ monikerRange: '>= aspnetcore-2.1'
 ms.author: riande
 ms.custom: mvc
 ms.date: 07/28/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: host-and-deploy/visual-studio-publish-profiles
 ---
 # Visual Studio publish profiles (.pubxml) for ASP.NET Core app deployment
@@ -206,7 +206,7 @@ Add a publish profile to the project's *Properties/PublishProfiles* folder with 
 When publishing with a profile named *FolderProfile*, use any of the following commands:
 
 ```dotnetcli
-dotnet publish /p:Configuration=Release /p:PublishProfile=FolderProfile`
+dotnet publish /p:Configuration=Release /p:PublishProfile=FolderProfile
 ```
 
 ```dotnetcli
